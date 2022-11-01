@@ -1,1 +1,23 @@
-coming soon...
+# This is a github action to get the amount of files in /questions and then update the filecount in readme.md
+name: File Count
+on:
+  push:
+    branches:
+      - master
+jobs:
+  filecount:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get file count
+        id: filecount
+        run: |
+          echo "::set-output name=count::$(find questions -type f | wc -l)"
+      - name: Update readme.md
+        run: |
+          sed -i "s/Total Questions: [0-9]*/Total Questions: ${{ steps.filecount.outputs.count }}/g" README.md
+          git config --global user.email "
+          git config --global user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "Update file count"
+          git push
