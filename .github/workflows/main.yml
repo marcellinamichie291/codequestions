@@ -14,10 +14,11 @@ jobs:
         run: |
           echo "::set-output name=count::$(find questions -type f | wc -l)"
       - name: Update readme.md
+        # the 8th line of readme.md should look like this: "Code Questions is a collection of over {filecount} questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from /questions"
         run: |
-          sed -i "s/Total Questions: [0-9]*/Total Questions: ${{ steps.filecount.outputs.count }}/g" README.md
-          git config --global user.email "
+          sed -i "8s/.*/Code Questions is a collection of over ${{ steps.filecount.outputs.count }} questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from \/questions/" readme.md
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add README.md
-          git commit -m "Update file count"
+          git add readme.md
+          git commit -m "Update file count in readme.md"
           git push
