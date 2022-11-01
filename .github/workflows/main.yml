@@ -1,24 +1,29 @@
-# This is a github action to get the amount of files in /questions and then update the filecount in readme.md
-name: File Count
+# This is a github action to get the amount of files in /questions and then update the filecount in README.md
+# the 8th line of README.md should look like this: "Code Questions is a collection of over {filecount} questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from /questions"
+# This action will only work if there are less than 1000 files in /questions
+
+name: Update filecount in README.md
+
 on:
   push:
     branches:
       - master
+
 jobs:
-  filecount:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Get file count
-        id: filecount
-        run: |
-          echo "::set-output name=count::$(find questions -type f | wc -l)"
-      - name: Update readme.md
-        # the 8th line of readme.md should look like this: "Code Questions is a collection of over {filecount} questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from /questions"
-        run: |
-          sed -i "8s/.*/Code Questions is a collection of over ${{ steps.filecount.outputs.count }} questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from \/questions/" README.md
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add readme.md
-          git commit -m "Update file count in readme.md"
-          git push
+    - uses: actions/checkout@master
+    - name: Update filecount in README.md
+      run: |
+        cd questions
+        filecount=$(ls -l | wc -l)
+        cd ..
+        echo "Code Questions is a collection of over $filecount questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from /questions" > README.md
+        echo "Code Questions is a collection of over $filecount questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from /questions"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git add README.md
+        git commit -m "Update filecount in README.md"
+        git push
+        
