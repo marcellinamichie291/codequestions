@@ -16,7 +16,7 @@ jobs:
       - name: Update readme.md
         # the 8th line of readme.md should look like this: "Code Questions is a collection of over {filecount} questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from /questions"
         run: |
-          sed -i "8s/.*/Code Questions is a collection of over ${{ steps.filecount.outputs.count }} questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from \/questions/" readme.md
+          sed -i "8s/.*/Code Questions is a collection of over ${{ steps.filecount.outputs.count }} questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from \/questions/" README.md
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add readme.md
