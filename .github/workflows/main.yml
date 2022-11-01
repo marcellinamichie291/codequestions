@@ -19,11 +19,9 @@ jobs:
         cd questions
         filecount=$(ls -l | wc -l)
         cd ..
-        echo "Code Questions is a collection of over $filecount questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from /questions" > README.md
-        echo "Code Questions is a collection of over $filecount questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from /questions"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git config user.name "github-actions[bot]"
+        sed -i "8s/.*/Code Questions is a collection of over $filecount questions that have been asked about code on Stack Overflow and other sites. The questions are currently not grouped. They accessable from \/questions/" README.md
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "readme-update[bot]"
         git add README.md
         git commit -m "Update filecount in README.md"
-        git push
-        
+        git push origin master
